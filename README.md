@@ -33,22 +33,23 @@ The platform is designed to serve as both:
 
 ---
 
-# System Architecture
+## System Architecture
 
 The system follows a layered architecture where specialized agents analyze different data sources.
 
+```
 Market Data / News / Sentiment
-↓
-Analysis Agents
-↓
-Strategy Agent
-↓
-Risk Management Agent
-↓
-Portfolio Management Agent
-↓
-Trade Execution
-
+            ↓
+      Analysis Agents
+            ↓
+        Strategy Agent
+            ↓
+     Risk Management Agent
+            ↓
+    Portfolio Management Agent
+            ↓
+       Trade Execution
+```
 
 This pipeline ensures that trading decisions are validated through multiple analytical stages.
 
@@ -138,7 +139,7 @@ The platform can integrate with:
 ---
 
 # Repository Structure
-
+```
 backend/
 agents/
 services/
@@ -166,27 +167,27 @@ tests/
 
 scripts/
 
-
+```
 This structure keeps the project modular and scalable.
 
 ---
 
 # Getting Started
 
-## 1 Clone the Repository
+## 1. Clone the Repository
 
 git clone <repo link>
 cd <repo-name>
 
-## 2 Setup Backend
+## 2. Setup Backend
 
-
+```
 cd backend
 python -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 uvicorn main:app --reload
-
+```
 
 Backend API will run at:
 
@@ -196,13 +197,13 @@ http://localhost:8000
 
 ---
 
-## 3 Setup Frontend
+## 3. Setup Frontend
 
-
+```
 cd frontend
 npm install
 npm run dev
-
+```
 
 Frontend dashboard will run at:
 
@@ -214,10 +215,10 @@ http://localhost:5173
 
 ## 4 Run Using Docker (Optional)
 
-
+```
 cd infrastructure/docker
 docker-compose up
-
+```
 
 ---
 
@@ -225,7 +226,7 @@ docker-compose up
 
 Detailed documentation is available inside the `docs` directory.
 
-
+```
 docs/
 ├── architecture/
 ├── api/
@@ -233,7 +234,7 @@ docs/
 ├── deployment/
 ├── onboarding/
 └── roadmap/
-
+```
 
 These documents explain:
 
