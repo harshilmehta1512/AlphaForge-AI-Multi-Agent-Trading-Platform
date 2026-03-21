@@ -1,165 +1,41 @@
-# Project Milestones
+# Milestones
 
-## Overview
+## Milestone 1: Scope And Contracts
+- freeze MVP scope
+- finalize asset universe
+- finalize agent specs
+- finalize shared contracts
 
-This document defines the major development milestones for the AlphaForge AI multi-agent trading platform.
+Exit condition:
+- all contributors are working from the same documented scope and contract set
 
-Milestones represent significant stages in the evolution of the system and help guide the development process.
+## Milestone 2: Data Readiness
+- complete collection and cleaning for market, news, sentiment, and fundamentals
+- validate schemas and storage format
 
-Each milestone introduces new capabilities and improves the platform's functionality.
+Exit condition:
+- cleaned data is usable by the backend and agents without ad hoc local fixes
 
----
+## Milestone 3: Core Agent Outputs
+- implement the four analysis agents
+- return contract-valid outputs for tracked tickers
 
-# Milestone 1 — Project Foundation
+Exit condition:
+- each analysis agent can produce a valid output for supported tickers
 
-Goal: Establish the base architecture and repository structure.
+## Milestone 4: Recommendation Engine
+- implement orchestrator
+- implement explainability output
+- implement risk gate
 
-Key objectives:
+Exit condition:
+- the system can produce a final explainable recommendation, not just individual agent outputs
 
-- initialize project repository
-- define folder structure
-- create documentation framework
-- establish coding standards
-- define agent architecture
-- configure backend and frontend scaffolding
+## Milestone 5: Product Demo
+- connect backend to frontend
+- show recommendation plus explanation in the dashboard
+- show portfolio decision, simulated execution, and reporting summary
+- prepare deterministic demo flow
 
-Deliverables:
-
-- project repository setup
-- architecture documentation
-- onboarding documentation
-- development workflow guidelines
-
----
-
-# Milestone 2 — Core Agent Implementation
-
-Goal: Implement the first set of analysis agents.
-
-Key objectives:
-
-- implement market data analysis agent
-- implement sentiment analysis agent
-- implement news analysis agent
-- implement fundamental analysis agent
-- establish data pipelines for agents
-
-Deliverables:
-
-- working analysis agents
-- basic signal generation framework
-- structured agent communication contracts
-
----
-
-# Milestone 3 — Strategy and Risk Layer
-
-Goal: Introduce trading decision logic and risk management.
-
-Key objectives:
-
-- implement strategy agent
-- implement risk management agent
-- define trading signal validation pipeline
-- integrate analysis agents with strategy layer
-
-Deliverables:
-
-- strategy evaluation pipeline
-- validated trading signals
-- risk-controlled trade recommendations
-
----
-
-# Milestone 4 — Portfolio and Execution System
-
-Goal: Enable portfolio management and trade execution.
-
-Key objectives:
-
-- implement portfolio management agent
-- implement trade execution agent
-- integrate broker APIs
-- track portfolio positions
-
-Deliverables:
-
-- automated portfolio allocation
-- trade execution capability
-- portfolio tracking system
-
----
-
-# Milestone 5 — Frontend Dashboard
-
-Goal: Build a dashboard for monitoring system activity.
-
-Key objectives:
-
-- create frontend interface
-- display market data and signals
-- show portfolio performance
-- visualize agent activity
-
-Deliverables:
-
-- interactive trading dashboard
-- live system monitoring
-- signal visualization panels
-
----
-
-# Milestone 6 — Infrastructure and Deployment
-
-Goal: Prepare the platform for scalable deployment.
-
-Key objectives:
-
-- containerize services using Docker
-- configure infrastructure using Terraform
-- establish deployment pipelines
-- configure environment management
-
-Deliverables:
-
-- Docker deployment
-- Terraform infrastructure setup
-- reproducible deployment environment
-
----
-
-# Milestone 7 — Advanced Trading Intelligence
-
-Goal: Introduce advanced intelligence capabilities.
-
-Key objectives:
-
-- advanced sentiment models
-- improved strategy algorithms
-- reinforcement learning strategies
-- advanced risk management techniques
-
-Deliverables:
-
-- improved trading performance
-- enhanced signal accuracy
-- advanced analytics capabilities
-
----
-
-# Milestone 8 — Production Readiness
-
-Goal: Prepare the system for stable real-world deployment.
-
-Key objectives:
-
-- improve system reliability
-- add monitoring and logging
-- implement security measures
-- perform performance optimization
-
-Deliverables:
-
-- stable production deployment
-- monitoring infrastructure
-- security improvements
+Exit condition:
+- a reviewer can see the full end-to-end story inside the product

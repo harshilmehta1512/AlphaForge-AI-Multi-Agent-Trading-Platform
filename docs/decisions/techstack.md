@@ -1,199 +1,77 @@
-# Technology Stack
+# Tech Stack
 
-## Overview
+This document records the tech stack for the first-phase AlphaForge build and the reason for each choice.
 
-This document explains the technology stack used in the AlphaForge AI multi-agent trading platform and the reasoning behind each major technology choice.
+## Core Stack
 
-The goal of the technology stack is to support:
+### Backend
+- Python
+- FastAPI
 
-- scalable system architecture
-- modular agent-based development
-- real-time data processing
-- rapid development and experimentation
-- reliable deployment
+### Frontend
+- React
+- TypeScript
 
----
+### Local Runtime
+- Docker
+- docker-compose
 
-# Backend Technologies
+### Infrastructure Later
+- Terraform
+
+## Why This Stack
 
 ## Python
-
-Python is used as the primary backend programming language.
-
-### Reasons for Choosing Python
-
-- strong ecosystem for financial analysis
-- excellent support for machine learning and AI
-- large number of financial data libraries
-- rapid prototyping capabilities
-- strong community support
-
-Common libraries used in the system may include:
-
-- pandas
-- numpy
-- scikit-learn
-- transformers
-- requests
-
----
+Chosen because it fits:
+- financial data processing
+- data cleaning
+- model experimentation
+- agent implementation
 
 ## FastAPI
-
-FastAPI is used to build the backend API layer.
-
-### Reasons for Choosing FastAPI
-
-- high performance asynchronous framework
-- automatic API documentation
-- built-in request validation
-- modern Python typing support
-- easy integration with AI workloads
-
-FastAPI provides the interface between:
-
-- frontend dashboard
-- backend trading agents
-
----
-
-# Frontend Technologies
+Chosen because it provides:
+- fast API development
+- request validation
+- typed contracts
+- clean integration with Python services
 
 ## React
-
-React is used for building the web dashboard.
-
-### Reasons for Choosing React
-
-- component-based architecture
-- strong ecosystem
-- large developer community
-- efficient state management
-- flexible UI development
-
-React enables developers to build complex dashboards such as:
-
-- trading dashboards
-- portfolio visualizations
-- risk monitoring interfaces
-
----
+Chosen because the product needs a dashboard-oriented UI with multiple connected views.
 
 ## TypeScript
-
-TypeScript is used to improve reliability of frontend code.
-
-### Reasons for Choosing TypeScript
-
-- static typing
-- better developer tooling
-- improved code maintainability
-- safer API integrations
-
----
-
-# Infrastructure Technologies
+Chosen because the dashboard will consume structured API contracts and type safety reduces integration errors.
 
 ## Docker
-
-Docker is used for containerizing application services.
-
-### Reasons for Choosing Docker
-
-- consistent development environments
-- simplified deployment
-- easier dependency management
-- improved reproducibility
-
-Docker containers allow the system to run consistently across:
-
-- developer machines
-- staging environments
-- production environments
-
----
+Chosen as the default local workflow because the team has multiple contributors working in parallel and needs a reproducible environment.
 
 ## Terraform
+Chosen for later infrastructure provisioning, not as a first-phase delivery dependency.
 
-Terraform is used for Infrastructure as Code (IaC).
+## Retrieval And Data Access Direction
 
-### Reasons for Choosing Terraform
+For phase one:
+- use structured cleaned datasets
+- use internal service/data access patterns
+- avoid forcing a generic RAG system into the MVP
 
-- declarative infrastructure definitions
-- cloud-agnostic infrastructure management
-- version-controlled infrastructure
-- reproducible deployments
+If a later phase requires search over large document collections such as filings or archived research, retrieval can be added intentionally at that time.
 
-Terraform allows infrastructure to be created using configuration files instead of manual setup.
+## What We Are Deliberately Not Choosing Right Now
 
----
+For phase one, the team is intentionally not prioritizing:
+- Kubernetes
+- complex distributed queues
+- mandatory WebSocket infrastructure
+- generic RAG setup without a concrete retrieval problem
+- live broker connectivity as a foundational dependency
 
-# Data Processing Technologies
+Those choices are deferred because they add complexity faster than they add product value in the current phase.
 
-The system processes multiple forms of financial data.
+## Decision Stability
 
-Tools and libraries may include:
+This stack is the default unless there is a documented reason to change it.
 
-- pandas for data manipulation
-- numpy for numerical computation
-- financial indicator libraries
-- natural language processing models
-
----
-
-# AI and Machine Learning
-
-Several agents rely on machine learning techniques.
-
-Examples include:
-
-- sentiment analysis models
-- news classification models
-- strategy evaluation models
-
-Potential frameworks include:
-
-- Hugging Face Transformers
-- PyTorch
-- TensorFlow
-
----
-
-# System Architecture
-
-The platform uses a **multi-agent architecture**.
-
-Each agent is responsible for a specific domain:
-
-- market data analysis
-- sentiment analysis
-- news analysis
-- technical analysis
-- strategy generation
-- risk management
-- portfolio management
-- trade execution
-
-This modular architecture improves scalability and maintainability.
-
----
-
-# Development Tools
-
-Common development tools include:
-
-- Git for version control
-- GitHub for collaboration
-- Docker for local development environments
-- Terraform for infrastructure management
-
----
-
-# Future Technology Considerations
-
-Future improvements may include:
-
-- distributed processing systems
-- real-time streaming data pipelines
-- container orchestration platforms
-- reinforcement learning trading models
+If a contributor wants to introduce a major new technology, they should be able to explain:
+- what problem it solves
+- why the current stack is insufficient
+- why it will not delay the MVP

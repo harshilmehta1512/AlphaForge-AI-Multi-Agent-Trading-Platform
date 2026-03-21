@@ -1,183 +1,104 @@
-# Developer Setup Guide
+# Setup Guide
 
-## Overview
+This document explains how a teammate should set up AlphaForge locally.
 
-This document explains how new developers can set up the AlphaForge AI multi-agent trading platform on their local machines.
+The goal is that any contributor can run the project without guessing the environment.
 
-The project consists of several main components:
+## Recommended Local Workflow
 
-- Backend (Python + FastAPI)
-- Frontend (React + TypeScript)
-- Infrastructure (Docker + Terraform)
+Use Docker first.
 
-Developers should follow the steps below to prepare their development environment.
+Reason:
+- shared environment for the team
+- fewer machine-specific issues
+- easier backend/frontend integration
+- easier onboarding for new contributors
 
----
-
-# Prerequisites
-
-Ensure the following tools are installed before setting up the project.
-
-Required software:
+## Required Tools
 
 - Git
 - Python 3.10+
-- Node.js (version 18+)
-- npm or yarn
-- Docker (recommended)
-- Terraform (optional for infrastructure development)
+- Node.js 18+
+- npm
+- Docker
 
----
+Optional:
+- Terraform for later infrastructure work only
 
-# Clone the Repository
-
-First clone the repository from GitHub.
+## Repository Setup
 
 ```bash
-git clone https://github.com/<org-name>/<repo-name>.git
-cd <repo-name>
+git clone <repository-url>
+cd AlphaForge-AI-Multi-Agent-Trading-Platform
 ```
 
-Replace <org-name> and <repo-name> with the actual repository details.
-
-Environment Variables
-
-The project uses environment variables to manage sensitive configuration values.
-
-Create a .env file in the project root.
-
-Example:
-
-.env
-
-Example variables:
-
-MARKET_DATA_API_KEY=
-NEWS_API_KEY=
-BROKER_API_KEY=
-BROKER_SECRET=
-JWT_SECRET=
-
-These values should never be committed to the repository.
-
-Backend Setup
-
-Navigate to the backend directory.
-
-```bash
-cd backend
-```
-
-Create a python virtual environment
-
-```bash
-cd python -m venv venv
-```
-
-Activate the environment
-
-Mac/Linux:
-```bash
-source venv/bin/activate
-```
-
-Windows:
-```bash
-venv\Scripts\activate
-```
-
-Install dependencies
-```bash
-pip install -r requirements.txt
-```
-
-Run the backend server
-
-```bash
-uvicorn main:app --reload
-```
-
-The backend server will start at:
-http://localhost:8000
-
-API Documentation
-
-FastAPI automatically generates API documentation.
-
-Access it at:
-
-http://localhost:8000/docs
-
-or
-
-http://localhost:8000/redoc
-Frontend Setup
-
-Navigate to the frontend directory.
-
-```bash 
-cd frontend
-```
-
-Install dependencies
-
-```bash
-npm install
-```
-
-Start the frontend development server
-
-```bash
-npm run dev
-```
-
-The frontend dashboard will run at:
-http://localhost:5173
-
-Running with Docker (Optional)
-
-The system can also be run using Docker containers.
-
-Navigate to:
+## Preferred Startup Method: Docker
 
 ```bash
 cd infrastructure/docker
+docker-compose up --build
 ```
 
-Start the services:
+Expected services:
+- backend on `http://localhost:8000`
+- frontend on `http://localhost:5173`
+
+## Manual Backend Setup
+
+Use this if you are actively working on the backend and do not want the full Docker flow during development.
 
 ```bash
-docker-compose up
+cd backend
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+uvicorn main:app --reload
 ```
 
-This will start all required services for local development
+## Manual Frontend Setup
 
-Verifying Setup
+Use this if you are actively working on the dashboard.
 
-Once both services are running:
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
-Backend API:
+## Expected Environment Variables
 
-http://localhost:8000
+Keep real secrets out of the repository.
 
-Frontend Dashboard:
+Suggested placeholders:
+- `MARKET_DATA_API_KEY`
+- `NEWS_API_KEY`
+- `SENTIMENT_DATA_API_KEY`
+- `FUNDAMENTAL_DATA_API_KEY`
+- `APP_ENV`
 
-``://localhost:5173
+If a specific provider is selected later, update this document with the exact required variables.
 
+## Setup Verification
 
-If both are accessible, the development environment is correctly configured.
+A setup is considered valid when:
+- the backend health endpoint responds
+- the frontend loads successfully
+- the local stack can be started without undocumented manual fixes
+- one sample ticker request returns a valid response shape
 
----
+## Setup Troubleshooting Guidance
 
-# Troubleshooting
+If setup fails, contributors should check in this order:
 
-Common issues include:
+1. Docker is installed and running
+2. required ports are free
+3. repository path is correct
+4. backend dependencies are installed if using manual mode
+5. frontend dependencies are installed if using manual mode
+6. environment variables or placeholders are present if required
 
-Dependency errors  
-→ Run `pip install -r requirements.txt` again.
+If the issue is not solved, the fix should be documented here once confirmed.
 
-Port conflicts  
-→ Ensure ports **8000** and **5173** are available.
+## Setup Rule For Contributors
 
-Missing environment variables  
-→ Ensure `.env` is properly configured.
+If a teammate had to perform an undocumented setup step to make the project run, the setup documentation is incomplete and should be updated.

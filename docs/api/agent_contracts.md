@@ -1,223 +1,167 @@
 # Agent Contracts
 
-## Overview
+This document defines the minimum contract that all MVP agents must follow.
 
-Agent contracts define the structured data formats used for communication between agents in the AlphaForge AI multi-agent trading platform.
+This file is one of the most important technical documents in the repository. If contributors violate these contracts, integration will become unreliable even if individual components work locally.
 
-Each agent produces outputs that may serve as inputs for other agents.  
-To ensure compatibility and maintain consistency across the system, agents exchange information using standardized data contracts.
+## Common Analysis Agent Output
 
-These contracts represent the core data structures used throughout the system.
+Every analysis agent must return:
 
----
-
-# Market Data Contract
-
-Market data represents the price and volume information of financial assets.
-
-Example structure:
-
-
+```json
 {
-"symbol": "AAPL",
-"timestamp": "2024-01-01T10:30:00Z",
-"price": 185.24,
-"volume": 1200000
+  "ticker": "AAPL",
+  "agent_name": "market_data_analysis_agent",
+  "signal": "BUY",
+  "confidence": 0.74,
+  "rationale": "Short-term trend and momentum are positive while volatility remains moderate.",
+  "key_factors": ["trend_up", "momentum_positive", "volatility_moderate"],
+  "data_window": "2025-03-01 to 2025-03-19",
+  "generated_at": "2025-03-19T12:00:00Z"
 }
+```
 
+Rules:
+- `ticker` must belong to the fixed 20-stock universe
+- `signal` must be `BUY`, `HOLD`, or `SELL`
+- `confidence` must be a number from `0` to `1`
+- `rationale` must be short and human-readable
+- `key_factors` must list the main reasons behind the signal
 
-Fields:
+Additional expectations:
+- `agent_name` must match the real agent identifier used across the backend
+- `data_window` must describe the time range the agent evaluated
+- `generated_at` must be a valid timestamp
+- the output should be deterministic for the same input snapshot wherever possible
 
-- symbol: trading asset symbol
-- timestamp: time of the market data point
-- price: current asset price
-- volume: traded volume
+## Final Recommendation Contract
 
----
+The orchestrator plus explainability layer must return:
 
-# News Article Contract
-
-News analysis agents process financial news articles.
-
-Example structure:
-
-
+```json
 {
-"source": "Reuters",
-"title": "Apple Reports Strong Earnings",
-"timestamp": "2024-01-01T08:00:00Z",
-"summary": "Apple reported higher than expected earnings for the quarter."
+  "ticker": "AAPL",
+  "final_signal": "BUY",
+  "final_confidence": 0.79,
+  "agent_outputs": [
+    {
+      "agent_name": "market_data_analysis_agent",
+      "signal": "BUY",
+      "confidence": 0.74
+    },
+    {
+      "agent_name": "news_analysis_agent",
+      "signal": "BUY",
+      "confidence": 0.71
+    },
+    {
+      "agent_name": "sentiment_analysis_agent",
+      "signal": "HOLD",
+      "confidence": 0.58
+    },
+    {
+      "agent_name": "fundamental_analysis_agent",
+      "signal": "BUY",
+      "confidence": 0.83
+    }
+  ],
+  "agent_contributions": {
+    "market_data_analysis_agent": 30,
+    "news_analysis_agent": 25,
+    "sentiment_analysis_agent": 15,
+    "fundamental_analysis_agent": 30
+  },
+  "risk_adjustment": {
+    "applied": false,
+    "reason": null
+  },
+  "final_rationale": "Three agents are constructive and the strongest support comes from market structure and fundamentals.",
+  "generated_at": "2025-03-19T12:00:00Z"
 }
+```
 
+Rules:
+- contribution percentages must sum to `100`
+- `risk_adjustment` must be explicit, even when unused
+- the final rationale must explain the combined result, not repeat every agent verbatim
 
-Fields:
+Additional expectations:
+- `agent_outputs` should include all required first-phase analysis agents
+- missing agent outputs should be treated as an explicit failure condition unless the system intentionally supports degraded operation
+- the final recommendation should not hide whether agents disagreed
 
-- source: news provider
-- title: article title
-- timestamp: time of publication
-- summary: extracted or summarized article content
+## Portfolio Decision Contract
 
----
+The portfolio management agent should produce a simple paper-allocation decision.
 
-# Sentiment Score Contract
-
-Sentiment analysis agents evaluate market sentiment.
-
-Example structure:
-
-
+```json
 {
-"symbol": "AAPL",
-"sentiment_score": 0.78,
-"confidence": 0.85
+  "ticker": "AAPL",
+  "approved_signal": "BUY",
+  "paper_position_size": 100,
+  "allocation_note": "Approved with moderate size due to good confidence and acceptable risk.",
+  "generated_at": "2025-03-19T12:00:00Z"
 }
+```
 
+Rules:
+- the decision must be derived from an approved recommendation
+- position sizing logic must follow the phase-one risk boundaries
+- the output must remain simple enough for the dashboard to display clearly
 
-Fields:
+## Simulated Trade Contract
 
-- symbol: associated financial asset
-- sentiment_score: sentiment value (-1 to 1)
-- confidence: confidence level of the sentiment model
+The trade execution agent should record a simulated trade result.
 
----
-
-# Technical Indicator Contract
-
-Technical analysis agents compute indicators used by strategy agents.
-
-Example structure:
-
-
+```json
 {
-"symbol": "AAPL",
-"rsi": 62.3,
-"macd": 1.5,
-"moving_average": 182.4
+  "ticker": "AAPL",
+  "side": "BUY",
+  "quantity": 100,
+  "execution_mode": "paper",
+  "status": "executed",
+  "executed_at": "2025-03-19T12:01:00Z"
 }
+```
 
+Rules:
+- `execution_mode` must remain `paper` for phase one
+- the simulated trade should be tied to a valid portfolio decision
+- status values should be limited and documented
 
-Fields:
+## Reporting Summary Contract
 
-- symbol: trading asset
-- rsi: relative strength index
-- macd: moving average convergence divergence
-- moving_average: computed moving average
+The reporting layer should be able to produce a concise summary for the dashboard.
 
----
-
-# Trading Signal Contract
-
-Strategy agents generate trading signals based on analysis results.
-
-Example structure:
-
-
+```json
 {
-"symbol": "AAPL",
-"signal": "BUY",
-"confidence": 0.82,
-"timestamp": "2024-01-01T10:35:00Z"
+  "ticker": "AAPL",
+  "final_signal": "BUY",
+  "risk_override_applied": false,
+  "trade_executed": true,
+  "summary": "Buy recommendation executed in paper mode with strongest support from market and fundamentals.",
+  "generated_at": "2025-03-19T12:02:00Z"
 }
+```
 
+Rules:
+- the summary must be readable by a non-developer
+- it should describe what happened, not just repeat raw fields
+- it should be consistent with the final recommendation, risk result, and simulated trade result
 
-Fields:
+## Contract Evolution Rule
 
-- symbol: trading asset
-- signal: BUY / SELL / HOLD
-- confidence: probability score
-- timestamp: time signal was generated
+If any contract changes:
+- the corresponding schema definitions must change
+- backend implementations must change
+- frontend usage must be updated
+- this document must be updated in the same change
 
----
+Do not allow silent contract drift.
 
-# Risk Evaluation Contract
+## Out Of Scope Contracts For Phase One
 
-The risk management agent evaluates the safety of executing trades.
-
-Example structure:
-
-
-{
-"symbol": "AAPL",
-"approved": true,
-"max_position_size": 10000,
-"stop_loss": 175.0
-}
-
-
-Fields:
-
-- symbol: trading asset
-- approved: whether the trade is allowed
-- max_position_size: maximum allowed capital allocation
-- stop_loss: recommended stop-loss level
-
----
-
-# Portfolio Allocation Contract
-
-Portfolio management agents determine asset allocation.
-
-Example structure:
-
-
-{
-"symbol": "AAPL",
-"allocation_percentage": 0.25
-}
-
-
-Fields:
-
-- symbol: trading asset
-- allocation_percentage: portfolio allocation weight
-
----
-
-# Order Contract
-
-Trade execution agents submit orders using a structured format.
-
-Example structure:
-
-
-{
-"symbol": "AAPL",
-"order_type": "MARKET",
-"side": "BUY",
-"quantity": 50
-}
-
-
-Fields:
-
-- symbol: trading asset
-- order_type: MARKET or LIMIT
-- side: BUY or SELL
-- quantity: number of shares or units
-
----
-
-# Contract Validation
-
-All agent contracts should follow consistent validation rules.
-
-Validation may include:
-
-- schema validation
-- type checking
-- required field verification
-
-This ensures that incorrect data does not propagate through the system.
-
----
-
-# Future Contract Extensions
-
-Additional contracts may be added as the system evolves.
-
-Examples include:
-
-- macroeconomic indicators
-- options trading signals
-- arbitrage opportunities
-- portfolio risk metrics
+The following contracts are not required for the MVP:
+- live order placement
+- WebSocket payloads
+- broker execution lifecycle

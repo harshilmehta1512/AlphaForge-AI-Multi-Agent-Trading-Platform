@@ -1,311 +1,111 @@
-# AlphaForge — Multi-Agent Algorithmic Trading Platform
-
-AlphaForge is a modular **multi-agent AI trading system** designed to analyze financial markets and generate intelligent trading decisions through a coordinated network of specialized agents.
-
-The platform combines multiple sources of market intelligence including:
-
-- market data
-- financial news
-- social sentiment
-- fundamental analysis
-- technical indicators
-
-Each component operates as an independent **AI agent**, contributing signals to a unified trading decision pipeline.
-
----
-
-# Project Vision
-
-The goal of AlphaForge is to build a **scalable AI-driven trading architecture** where multiple agents collaborate to analyze markets and generate trading strategies.
-
-Key objectives include:
-
-- modular multi-agent architecture
-- intelligent market analysis
-- automated trading signal generation
-- portfolio and risk management
-- real-time monitoring dashboard
-
-The platform is designed to serve as both:
-
-- a **research environment for AI trading systems**
-- a **production-ready trading infrastructure**
-
----
-
-## System Architecture
-
-The system follows a layered architecture where specialized agents analyze different data sources.
-
-```
-Market Data / News / Sentiment
-            ↓
-      Analysis Agents
-            ↓
-        Strategy Agent
-            ↓
-     Risk Management Agent
-            ↓
-    Portfolio Management Agent
-            ↓
-       Trade Execution
-```
-
-This pipeline ensures that trading decisions are validated through multiple analytical stages.
-
----
-
-# Core Agents
-
-The system consists of several specialized agents.
-
-### Analysis Agents
-
-These agents analyze different sources of market information.
-
-- Market Data Analysis Agent
-- Sentiment Analysis Agent
-- News Analysis Agent
-- Fundamental Analysis Agent
-- Technical Analysis Agent
-
----
-
-### Decision Agents
-
-These agents convert analysis results into trading decisions.
-
-- Strategy Agent
-- Risk Management Agent
-
----
-
-### Execution Agents
-
-These agents manage portfolio allocation and trade execution.
-
-- Portfolio Management Agent
-- Trade Execution Agent
-
----
-
-### System Agents
-
-These agents manage system orchestration and monitoring.
-
-- Orchestrator Agent
-- Monitoring & Alert Agent
-- Reporting Agent
-- Backtesting Agent
-
----
-
-# Technology Stack
-
-## Backend
-
-- Python
-- FastAPI
-- Pandas / NumPy
-- Machine Learning libraries
-
----
-
-## Frontend
-
-- React
-- TypeScript
-- Modern UI dashboard
-
----
-
-## Infrastructure
-
-- Docker
-- Terraform
-- Cloud Infrastructure
-
----
-
-## Data Sources
-
-The platform can integrate with:
-
-- financial market APIs
-- news data providers
-- social sentiment sources
-- broker APIs
-
----
-
-# Repository Structure
-```
-backend/
-agents/
-services/
-models/
-schemas/
-api/
-
-frontend/
-components/
-pages/
-services/
-
-infrastructure/
-docker/
-terraform/
-
-docs/
-architecture/
-api/
-deployment/
-onboarding/
-roadmap/
-
-tests/
-
-scripts/
-
-```
-This structure keeps the project modular and scalable.
-
----
-
-# Getting Started
-
-## 1. Clone the Repository
-
-git clone <repo link>
-cd <repo-name>
-
-## 2. Setup Backend
-
-```
-cd backend
-python -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-uvicorn main:app --reload
-```
-
-Backend API will run at:
-
-
-http://localhost:8000
-
-
----
-
-## 3. Setup Frontend
-
-```
-cd frontend
-npm install
-npm run dev
-```
-
-Frontend dashboard will run at:
-
-
-http://localhost:5173
-
-
----
-
-## 4 Run Using Docker (Optional)
-
-```
-cd infrastructure/docker
-docker-compose up
-```
-
----
-
-# Documentation
-
-Detailed documentation is available inside the `docs` directory.
-
-```
-docs/
-├── architecture/
-├── api/
-├── decisions/
-├── deployment/
-├── onboarding/
-└── roadmap/
-```
-
-These documents explain:
-
-- system architecture
-- agent communication
-- API specifications
-- deployment setup
-- development workflow
-- project roadmap
-
----
-
-# Development Workflow
-
-Developers should follow the workflow described in:
-
-
-docs/onboarding/
-
-
-Key practices include:
-
-- feature branches for development
-- pull request reviews
-- consistent coding standards
-- documentation updates
-
----
-
-# Future Development
-
-Planned enhancements include:
-
-- reinforcement learning trading strategies
-- distributed agent infrastructure
-- real-time market data streaming
+# AlphaForge
+
+AlphaForge is an explainable multi-agent trading application for US large-cap equities.
+
+The product goal is to show a complete end-to-end trading workflow, not just a raw `BUY` or `SELL` output. For any tracked stock, the system should:
+- collect and use cleaned market, news, sentiment, and fundamental data
+- run multiple specialized agents on that data
+- combine those agent outputs into one recommendation
+- explain which agents influenced the decision and by how much
+- apply risk checks before allowing the recommendation to proceed
+- create a paper-trade style execution result
+- show the full flow inside a dashboard
+
+The first phase is a paper-trading MVP. It is not a live broker-connected autonomous trading system.
+
+## What The App Is
+
+AlphaForge is being built as an end-to-end explainable trading platform with these first-phase components:
+- four core analysis agents:
+  - market data analysis agent
+  - news analysis agent
+  - sentiment analysis agent
+  - fundamental analysis agent
+- supporting product-flow agents and services:
+  - orchestration agent
+  - risk management agent
+  - portfolio management agent
+  - trade execution agent in simulation mode
+  - reporting agent
+- one backend API
+- one frontend dashboard
+
+The main differentiator is explainability. The system should not only say what to do. It should show:
+- each agent's signal
+- each agent's confidence
+- each agent's contribution to the final decision
+- whether risk controls changed the outcome
+
+## First-Phase Scope
+
+The first phase is intentionally narrow so the team can finish an end-to-end MVP on time.
+
+Current scope:
+- asset universe: 20 fixed US large-cap tickers
+- timeframe: daily data only
+- decision horizon: 3-10 trading days
+- output labels: `BUY`, `HOLD`, `SELL`
+- execution mode: paper trading / simulation only
+
+Tracked ticker basket:
+`AAPL, MSFT, NVDA, GOOGL, AMZN, META, TSLA, AMD, NFLX, JPM, GS, V, MA, XOM, CVX, UNH, JNJ, WMT, COST, KO`
+
+Out of scope for the first phase:
+- crypto
+- forex
+- options
+- futures
+- international equities
+- live broker integration
+- production-grade compliance automation
 - advanced portfolio optimization
-- improved machine learning models
+- intraday or high-frequency execution
 
-See:
+## End-To-End Product Flow
 
+```text
+cleaned datasets
+-> analysis agents
+-> orchestration agent
+-> explainability output
+-> risk management
+-> portfolio decision
+-> paper execution
+-> reporting
+-> dashboard
+```
 
-docs/roadmap/
+## Repository Structure
 
+```text
+agents/           agent folders and ownership boundaries
+backend/          FastAPI app, services, schemas, orchestration
+frontend/         dashboard application
+infrastructure/   Docker and Terraform files
+docs/             project documentation and reading path
+scripts/          local helper scripts
+shared/           shared schemas, constants, and utilities
+```
 
-for detailed development plans.
+## Where To Read Next
 
----
+The repository overview is here. Detailed product and engineering documentation lives in `docs/`.
 
-# Contributing
+Start with:
+1. `docs/README.md`
+2. `docs/product/mvp_scope.md`
+3. `docs/product/agents.md`
+4. `docs/architecture/system_architecture.md`
+5. `docs/architecture/backend_architecture.md`
+6. `docs/product/dashboard.md`
+7. `docs/decisions/techstack.md`
+8. `docs/onboarding/setup.md`
+9. `docs/onboarding/team_workflow.md`
 
-Contributions are welcome.
+## Project Management Rule
 
-Developers should review:
+The GitHub Kanban board should contain implementation tasks, blockers, bugs, and delivery work only. Product definitions, agent boundaries, dashboard behavior, setup instructions, and workflow rules should live in `docs/`.
 
+## Status
 
-docs/onboarding/
-
-
-before starting development to understand the project workflow and coding standards.
-
----
-
-# License
-
-This project is intended for research and educational purposes.
-
----
-
-# Disclaimer
-
-This project is a research and development platform for algorithmic trading systems.
-
-It should **not be used for live financial trading without proper testing, risk management, and regulatory compliance**.
+This repository is in MVP build phase. Some folders are scaffolds and some implementation areas are still pending.
