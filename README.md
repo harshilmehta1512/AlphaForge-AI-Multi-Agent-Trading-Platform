@@ -95,12 +95,15 @@ Start with:
 1. `docs/README.md`
 2. `docs/product/mvp_scope.md`
 3. `docs/product/agents.md`
-4. `docs/architecture/system_architecture.md`
-5. `docs/architecture/backend_architecture.md`
-6. `docs/product/dashboard.md`
-7. `docs/decisions/techstack.md`
-8. `docs/onboarding/setup.md`
-9. `docs/onboarding/team_workflow.md`
+4. `docs/product/dashboard.md`
+5. `docs/architecture/system_architecture.md`
+6. `docs/architecture/backend_architecture.md`
+7. `docs/architecture/data_flow.md`
+8. `docs/api/agent_contracts.md`
+9. `docs/api/backend-api.md`
+10. `docs/decisions/techstack.md`
+11. `docs/onboarding/setup.md`
+12. `docs/onboarding/team_workflow.md`
 
 ## Project Management Rule
 

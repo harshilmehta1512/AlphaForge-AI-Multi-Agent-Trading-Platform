@@ -28,7 +28,7 @@ Optional:
 ## Repository Setup
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/harshilmehta1512/AlphaForge-AI-Multi-Agent-Trading-Platform.git
 cd AlphaForge-AI-Multi-Agent-Trading-Platform
 ```
 

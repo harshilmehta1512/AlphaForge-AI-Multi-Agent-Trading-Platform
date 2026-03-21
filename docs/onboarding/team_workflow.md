@@ -42,8 +42,12 @@ Tasks should be small enough that:
 Before building, contributors must read:
 - `docs/product/mvp_scope.md`
 - `docs/product/agents.md`
+- `docs/product/dashboard.md`
 - `docs/architecture/system_architecture.md`
+- `docs/architecture/backend_architecture.md`
+- `docs/architecture/data_flow.md`
 - `docs/api/agent_contracts.md`
+- `docs/api/backend-api.md`
 
 This prevents people from making incompatible assumptions.
 

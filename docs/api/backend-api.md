@@ -9,6 +9,9 @@ The backend API should do only what the MVP needs:
 - list the tracked tickers
 - return individual agent output for a ticker
 - return the final explained recommendation for a ticker
+- return paper portfolio state
+- return simulated trade history
+- return reporting summaries
 - support the dashboard with one coherent end-to-end response model
 
 ## Suggested Base Path
@@ -57,6 +60,27 @@ Recommended response sections:
 - simulated execution result
 - reporting summary
 
+### `GET /api/v1/portfolio`
+Returns the current paper portfolio state.
+
+Purpose:
+- power the portfolio page
+- show current simulated positions and available paper capital
+
+### `GET /api/v1/trades`
+Returns simulated trade history.
+
+Purpose:
+- power the trade history page
+- show which simulated actions followed recommendations
+
+### `GET /api/v1/reports`
+Returns reporting summaries for dashboard display.
+
+Purpose:
+- power the reports page
+- expose readable summaries of recommendations, risk changes, and simulated trades
+
 ## Suggested Endpoint Ownership
 
 ### Health
@@ -71,10 +95,13 @@ Owned jointly by backend and analysis-agent contributors.
 ### Final Recommendation
 Owned by the orchestration/backend integration path and should be treated as the most important endpoint in the MVP.
 
+### Portfolio, Trades, Reports
+Owned by the backend integration path that connects portfolio logic, simulated execution, reporting, and dashboard display.
+
 ## Non-MVP Endpoints
 
 These should not block the MVP:
-- live portfolio endpoints
+- live broker-connected portfolio endpoints
 - broker order endpoints
 - backtesting endpoints
 - WebSocket support
@@ -96,5 +123,8 @@ The frontend will likely use the API like this:
 - overview page -> `GET /api/v1/recommendation/{ticker}`
 - recommendation detail page -> `GET /api/v1/recommendation/{ticker}`
 - agent breakdown page -> `GET /api/v1/agents/{agent_name}/{ticker}` or the final recommendation payload
+- portfolio page -> `GET /api/v1/portfolio`
+- trade history page -> `GET /api/v1/trades`
+- reports page -> `GET /api/v1/reports`
 - startup ticker selector -> `GET /api/v1/tickers`
 - health check/dev verification -> `GET /api/v1/health`
